@@ -7,6 +7,10 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public String getFrequencies(File inputFile) {
 
+		int[] frequencies = new int[256];
+
+		
+
 		return "";
 	}
 
