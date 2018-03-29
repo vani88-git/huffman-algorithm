@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.io.File;
 
 public class huffmanAlgorithm implements HuffmanCoding {
@@ -7,11 +8,39 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public String getFrequencies(File inputFile) {
 
-		int[] frequencies = new int[256];
+		Scanner sc;
 
-		
+		try {
 
-		return "";
+			sc = new Scanner(inputFile);
+		} 
+		catch (Exception e) {
+
+			e.printStackTrace();
+			return null;
+		}
+
+		sc.useDelimiter("");
+
+
+		int[] frequencies = new int[127];
+		char index = 0;
+
+		while (sc.hasNext()) {
+
+			index = sc.next().charAt(0);
+			frequencies[index]++;
+		}
+
+		String temp = "";
+
+		for (int i = 32; i < 127; i++) {
+
+			temp += String.valueOf( (char)i ) + " " + frequencies[i] + "\n";
+		}
+
+		// return temp.substring(0,temp.length()-1);
+		return temp;
 	}
 
 	//take a file as input and create a Huffman Tree
