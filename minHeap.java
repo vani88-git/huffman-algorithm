@@ -44,7 +44,7 @@ public class minHeap {
 	 	size++;
 
 	 	//the child was the node that we inserted
-	 	int child = size-1, parent = child/2;
+	 	int child = size-1, parent = (child-1)/2;
 	 	heapNode temp = null;
 
 	 	/* while the parent isnt the child (means we must be at the root) and the frequency of the parent is 
@@ -57,7 +57,7 @@ public class minHeap {
 	 		heapNodes.set(child, temp);
 
 	 		child = parent;
-	 		parent = child/2;
+	 		parent = (child-1)/2;
 	 	}
 	 }
 
@@ -79,30 +79,36 @@ public class minHeap {
 	 	/* reheapify! */
 
 	 	//current node, its left and right children, a temporary variable holding the minimum between left and right, and a temp heapNode holder
-	 	int curr = 0, left = 2*curr, right = 2*curr+1, toSwap = -1;
+	 	int curr = 0, left = 1, right = 2, toSwap = -1;
 	 	heapNode temp = null;
 
 	 	/* while the left node is a valid node and the frequency of the current node is greater then the frequency of the left node
 	 	 or the right node is a valid node and the frequency of the current node is greater then the frequency of the right node*/
-	 	while ((left < size && heapNodes.get(curr).getFrequency() > heapNodes.get(left).getFrequency()) || 
-	 		(right < size && heapNodes.get(curr).getFrequency() > heapNodes.get(right).getFrequency())) {
+	 	while (true) {
 
-	 		toSwap = left;
+	 		if (right >= size) {
 
-	 		if (right < size && heapNodes.get(right).getFrequency() < heapNodes.get(left).getFrequency()) {
+                  if (left >= size) break;
+                  else toSwap = left;
+            }
+			else {
+                  
+                  if (heapNodes.get(left).getFrequency() <= heapNodes.get(right).getFrequency()) toSwap = left;
+                  else toSwap = right;
+            }
+			if (heapNodes.get(curr).getFrequency() > heapNodes.get(toSwap).getFrequency()) {
 
-	 			toSwap = right;
-	 		}
+				temp = heapNodes.get(curr);
+	 			heapNodes.set(curr, heapNodes.get(toSwap));
+	 			heapNodes.set(toSwap, temp);
 
-	 		temp = heapNodes.get(curr);
-	 		heapNodes.set(curr, heapNodes.get(toSwap));
-	 		heapNodes.set(toSwap, temp);
+	 			curr = toSwap;
+	 			left = 2*curr+1;
+	 			right = 2*curr+2;
 
-	 		curr = toSwap;
-	 		left = 2*curr;
-	 		right = 2*curr+1;
+            }
+            else break;
 	 	}
-
 	 	return min;
 	 }
 }
