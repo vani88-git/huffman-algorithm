@@ -4,7 +4,17 @@ public class HuffTree {
 
 	public HuffTree(char element, int weight) {
 
-		root = new huffLeafNode(element, weight);
+		this.root = new huffLeafNode(element, weight);
+	}
+
+	public HuffTree(huffNode left, huffNode right, int weight) {
+
+		this.root = new huffInterNode(left, right, weight);
+	}
+
+	public HuffTree(huffNode root) {
+
+		this.root = root;
 	}
 
 	public huffNode getRoot() {
@@ -16,9 +26,4 @@ public class HuffTree {
 
 		return root.getWeight();
 	}
-
-	// public int compareTo(Object tree) {
-
-	// 	return 0;
-	// }
 }

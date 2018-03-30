@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class minHeap {
 	
 	 private int size;
-	 private ArrayList<heapNode> heapNodes;
+	 private ArrayList<HuffTree> trees;
 
 	 public minHeap() {
 
-	 	heapNodes = new ArrayList<heapNode>();
+	 	trees = new ArrayList<HuffTree>();
 	 	size = 0;
 	 }
 
@@ -22,7 +22,7 @@ public class minHeap {
 
 	 	for (int i = 0; i < size; i++) {
 
-	 		temp += heapNodes.get(i).getFrequency() + ", ";
+	 		temp += trees.get(i).getWeight() + ", ";
 	 	}
 
 	 	if (size > 0) temp = temp.substring(0, temp.length()-2);
@@ -37,50 +37,50 @@ public class minHeap {
 	 	return size == 0;
 	 }
 
-	 public void insert(heapNode toAdd) {
+	 public void insert(HuffTree toAdd) {
 
 	 	//add to the end of the list and increment size
-	 	heapNodes.add(toAdd);
+	 	trees.add(toAdd);
 	 	size++;
 
 	 	//the child was the node that we inserted
 	 	int child = size-1, parent = (child-1)/2;
-	 	heapNode temp = null;
+	 	HuffTree temp = null;
 
 	 	/* while the parent isnt the child (means we must be at the root) and the frequency of the parent is 
 	 	greater than that of the child  */
-	 	while (parent != child && heapNodes.get(parent).getFrequency() > heapNodes.get(child).getFrequency()) {
+	 	while (parent != child && trees.get(parent).getWeight() > trees.get(child).getWeight()) {
 
 	 		//swap parent and child
-	 		temp = heapNodes.get(parent);
-	 		heapNodes.set(parent, heapNodes.get(child));
-	 		heapNodes.set(child, temp);
+	 		temp = trees.get(parent);
+	 		trees.set(parent, trees.get(child));
+	 		trees.set(child, temp);
 
 	 		child = parent;
 	 		parent = (child-1)/2;
 	 	}
 	 }
 
-	 public heapNode deleteMin() {
+	 public HuffTree removeMin() {
 
 	 	//edge case protection
 	 	if (size == 0) return null;
 
 	 	//grab the minimum element at the root and place it in min
-	 	heapNode min = heapNodes.get(0);
+	 	HuffTree min = trees.get(0);
 	 	
 	 	//set the root equal to the last element in the list
-	 	heapNodes.set(0, heapNodes.get(size-1));
+	 	trees.set(0, trees.get(size-1));
 
 	 	//remove the last element in the list as it is now at the root
-	 	heapNodes.remove(size-1);
+	 	trees.remove(size-1);
 	 	size--;
 
 	 	/* reheapify! */
 
-	 	//current node, its left and right children, a temporary variable holding the minimum between left and right, and a temp heapNode holder
+	 	//current node, its left and right children, a temporary variable holding the minimum between left and right, and a temp HuffTree holder
 	 	int curr = 0, left = 1, right = 2, toSwap = -1;
-	 	heapNode temp = null;
+	 	HuffTree temp = null;
 
 	 	/* while the left node is a valid node and the frequency of the current node is greater then the frequency of the left node
 	 	 or the right node is a valid node and the frequency of the current node is greater then the frequency of the right node*/
@@ -93,19 +93,18 @@ public class minHeap {
             }
 			else {
                   
-                  if (heapNodes.get(left).getFrequency() <= heapNodes.get(right).getFrequency()) toSwap = left;
+                  if (trees.get(left).getWeight() <= trees.get(right).getWeight()) toSwap = left;
                   else toSwap = right;
             }
-			if (heapNodes.get(curr).getFrequency() > heapNodes.get(toSwap).getFrequency()) {
+			if (trees.get(curr).getWeight() > trees.get(toSwap).getWeight()) {
 
-				temp = heapNodes.get(curr);
-	 			heapNodes.set(curr, heapNodes.get(toSwap));
-	 			heapNodes.set(toSwap, temp);
+				temp = trees.get(curr);
+	 			trees.set(curr, trees.get(toSwap));
+				trees.set(toSwap, temp);
 
 	 			curr = toSwap;
 	 			left = 2*curr+1;
 	 			right = 2*curr+2;
-
             }
             else break;
 	 	}

@@ -23,7 +23,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		sc.useDelimiter("");
 
 
-		int[] frequencies = new int[127];
+		int[] frequencies = new int[128];
 		char index = 0;
 
 		while (sc.hasNext()) {
@@ -36,10 +36,11 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 		for (int i = 32; i < 127; i++) {
 
+			if (frequencies[i] == 0) continue;
+
 			temp += String.valueOf( (char)i ) + " " + frequencies[i] + "\n";
 		}
 
-		// return temp.substring(0,temp.length()-1);
 		return temp;
 	}
 
@@ -47,7 +48,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public HuffTree buildTree(File inputFile) {
 
-		return null;
+		return buildTree(buildHeap(getFrequencies(inputFile)));
 	}
 	
 	//take a file and a HuffTree and encode the file.  
@@ -74,6 +75,42 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 	public HuffTree buildTree(minHeap heap) {
 
-		return null;
+		HuffTree a, b;
+		boolean aIsMin;
+
+		while (heap.size() > 1) {
+
+			a = heap.removeMin();
+			b = heap.removeMin();
+
+			aIsMin = true;
+			if (b.getWeight() < a.getWeight()) aIsMin = false;
+
+			if (aIsMin) heap.insert( new HuffTree( new huffInterNode( a.getRoot(), b.getRoot(), a.getWeight()+b.getWeight() ) ) );
+			else heap.insert( new HuffTree( new huffInterNode( b.getRoot(), a.getRoot(), a.getWeight()+b.getWeight() ) ) );
+		}
+
+		return heap.removeMin();
+	}
+
+	public minHeap buildHeap(String frequencies) {
+
+		minHeap heap = new minHeap();
+
+		//the start of the new occurence. starts at 0 and then occurs at i + 2
+		int start = 0;
+		String occurence;
+
+		for (int i = 0; i < frequencies.length(); i++) {
+
+			if (frequencies.charAt(i) == '\n') {
+
+				occurence = frequencies.substring(start, i);
+				heap.insert( new HuffTree( occurence.charAt(0), Integer.valueOf(occurence.substring(occurence.lastIndexOf(' ')+1)) ));
+				start = i + 1;
+			}
+		}
+
+		return heap;
 	}
 }

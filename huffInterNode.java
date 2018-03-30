@@ -3,6 +3,13 @@ public class huffInterNode implements huffNode {
 	private huffNode left, right;
 	private int weight;
 
+	public huffInterNode(huffNode left, huffNode right) {
+
+		this.left = left;
+		this.right = right;
+		weight = left.getWeight() + right.getWeight();
+	}
+
 	public huffInterNode(huffNode left, huffNode right, int weight) {
 
 		this.left = left;
