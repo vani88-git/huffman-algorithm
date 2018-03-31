@@ -10,7 +10,7 @@ public class huffStack {
 		contents = new LinkedList<Integer>();
 	}
 
-	public boolean insert(int toInsert) {
+	public boolean push(int toInsert) {
 
 		if (toInsert == 1 || toInsert == 0) {
 

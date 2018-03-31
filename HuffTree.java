@@ -26,4 +26,18 @@ public class HuffTree {
 
 		return root.getWeight();
 	}
+
+	public String toString(huffNode node) {
+
+		// if (node == null) return "";
+
+		// if (node.isLeaf()) return ( (huffLeafNode) node ).getValue() + " " + ( (huffLeafNode) node ).getWeight() + "\n";
+
+		// else {
+
+		// 	toString
+		// }
+
+		return "";
+	}
 }

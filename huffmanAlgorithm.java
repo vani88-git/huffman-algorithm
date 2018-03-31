@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Deque;
+import java.util.ArrayDeque;
 import java.io.File;
 
 public class huffmanAlgorithm implements HuffmanCoding {
@@ -70,9 +72,46 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public String traverseHuffmanTree(HuffTree tree) {
 
-		huffNode root = tree.getRoot();
+		// if (tree.getRoot() == null) return "";
 
-		if (root.isLeaf()) root.getFrequenc
+		// Deque<huffNode> nodes = new ArrayDeque<huffNode>();
+		// huffStack code = new huffStack();
+		// huffNode node = null;
+		// String temp = "";
+
+		// nodes.push(tree.getRoot());
+
+		// while (!nodes.isEmpty()) {
+
+		// 	node = nodes.pop();
+		// 	if (!node.isLeaf()) {
+
+		// 		nodes.push(node.getRight());
+		// 		nodes.push(node.getLeft());
+		// 	}
+		// }
+
+		// return temp;
+
+		return traverseHuffmanTree(tree.getRoot(), "", "");
+	}
+
+	public String traverseHuffmanTree(huffNode root, String code, String temp) {
+
+		if (root == null) return "";
+
+		if (!root.isLeaf()) {
+
+			temp += traverseHuffmanTree(( (huffInterNode) root ).getLeft(), code + "0", temp);
+			temp += traverseHuffmanTree(( (huffInterNode) root ).getRight(), code + "1", temp);
+
+			return temp;
+		}
+
+		else {
+
+			return ( (huffLeafNode) root ).getValue() + " " + code + "\n";
+		}
 	}
 
 	public HuffTree buildTree(minHeap heap) {
