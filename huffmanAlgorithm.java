@@ -68,9 +68,11 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 	//print the characters and their codes
 	@Override
-	public String traverseHuffmanTree(HuffTree huffTree) {
+	public String traverseHuffmanTree(HuffTree tree) {
 
-		return "";
+		huffNode root = tree.getRoot();
+
+		if (root.isLeaf()) root.getFrequenc
 	}
 
 	public HuffTree buildTree(minHeap heap) {
