@@ -8,13 +8,13 @@ public class test {
 
 	huffmanAlgorithm test = new huffmanAlgorithm();
 
-	String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/chars.txt";
+	String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/test.txt";
 	HuffTree tree = test.buildTree(test.buildHeap(test.getFrequencies(new File(inputFile))));
 
 	String encoded = test.encodeFile(new File(inputFile), tree);
 	String transformed = test.decodeFile( encoded, tree );
 
-	// System.out.println(encoded);
+	System.out.println(encoded);
 	System.out.println(transformed);
 	}
 }
