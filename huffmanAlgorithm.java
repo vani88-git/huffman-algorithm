@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.Deque;
-import java.util.ArrayDeque;
 import java.io.File;
 
 public class huffmanAlgorithm implements HuffmanCoding {
@@ -126,7 +124,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 				for (int j = 0; j < table.length; j++) {
 
 					//if the code equals the occurence, then we have found the character that it is equal to
-					if (table[j].equals(occurence)) {
+					if (table[j] != null && table[j].equals(occurence)) {
 
 						/* cast j as a character, as that is the character value that it is equal to, then take the value of it as a string 
 						and append it to the decoded string */
@@ -146,17 +144,17 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public String traverseHuffmanTree(HuffTree tree) {
 
-		StringBuilder code = new StringBuilder();
+		StringBuilder codes = new StringBuilder();
 
-		tree.traverseTree(tree.getRoot(), code);
+		tree.traverseTree(tree.getRoot(), codes);
 
-		return code.toString();
+		return codes.toString();
 	}
 
+	//build a tree from a min heap priority queue
 	public HuffTree buildTree(minHeap heap) {
 
 		HuffTree a, b;
-		// boolean aIsMin;
 
 		while (heap.size() > 1) {
 
@@ -164,14 +162,8 @@ public class huffmanAlgorithm implements HuffmanCoding {
 			a = heap.removeMin();
 			b = heap.removeMin();
 
-			//determine the minimum between the two nodes
-			// aIsMin = true;
-			// if (b.getWeight() < a.getWeight()) aIsMin = false;
-
 			//pair the nodes together into a huffman tree and insert back into the heap with the minimum on the left and the maximum on the right
-			// if (aIsMin) 
 			heap.insert( new HuffTree( new huffInterNode( a.getRoot(), b.getRoot(), a.getWeight()+b.getWeight() ) ) );
-			// else heap.insert( new HuffTree( new huffInterNode( b.getRoot(), a.getRoot(), a.getWeight()+b.getWeight() ) ) );
 		}
 
 		//return the only variable present in the heap, the root of the huffman tree
@@ -213,6 +205,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		return table;
 	}
 
+	//build a heap from the string of frequencies
 	public minHeap buildHeap(String frequencies) {
 
 		minHeap heap = new minHeap();

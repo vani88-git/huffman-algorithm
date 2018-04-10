@@ -27,23 +27,28 @@ public class HuffTree {
 		return root.getWeight();
 	}
 
-	//NOT CORRECT
-	public void traverseTree(huffNode node, StringBuilder code) {
+	public void traverseTree(huffNode node, StringBuilder codes) {
+
+		if (codes == null || node == null || node.isLeaf()) return;
+
+		traverseTree(  ( (huffInterNode)(node) ).getRight(), codes, "1");
+
+		traverseTree(  ( (huffInterNode)(node) ).getLeft(), codes, "0");
+		
+	}
+
+	public void traverseTree(huffNode node, StringBuilder codes, String code) {
 
 		if (node.isLeaf()) {
 
-			String theString = ( (huffLeafNode) node ).getValue() + " " + ( (huffLeafNode) node ).getWeight() + "\n";
-
-			System.out.println(theString);
-
-			code.append(  ( (huffLeafNode) node ).getValue() + " " + ( (huffLeafNode) node ).getWeight() + "\n"  );
+			codes.append(( (huffLeafNode) node ).getValue() + " " + code + "\n");
 		}
 
 		else {
 
-			traverseTree(  ( (huffInterNode)(node) ).getRight(), code  );
+			traverseTree(  ( (huffInterNode)(node) ).getRight(), codes, code + "1");
 
-			traverseTree(  ( (huffInterNode)(node) ).getLeft(), code  );
+			traverseTree(  ( (huffInterNode)(node) ).getLeft(), codes, code + "0");
 		}
 	}
 }
