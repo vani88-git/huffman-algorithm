@@ -2,6 +2,13 @@ import java.util.Scanner;
 import java.io.File;
 
 public class huffmanAlgorithm implements HuffmanCoding {
+
+	private String[] codeTable;
+
+	public huffmanAlgorithm() {
+
+		codeTable = null;
+	}
 	
 	//take a file as input and create a table with characters and frequencies
 	//print the characters and frequencies
@@ -68,7 +75,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 		//build the code table and initialize the encoded string as an empty string
 		String[] table = buildCodeTable ( traverseHuffmanTree(huffTree) );
-		String encoded = "";
+		StringBuilder encoded = new StringBuilder();
 
 		//declare scanner
 		Scanner sc;
@@ -91,11 +98,11 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		while (sc.hasNext()) {
 
 			//append the encoded string of 0 and 1 to the end of the encoded string, followed by a space
-			encoded += table[sc.next().charAt(0)] + " ";
+			encoded.append(String.valueOf(table[sc.next().charAt(0)]) + " ");
 		}
 
 		//return the encoded string
-		return encoded;
+		return encoded.toString();
 	}
 
 	//take a String and HuffTree and output the decoded words
@@ -109,7 +116,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 		int start = 0;
 		String occurence;
-		String decoded = "";
+		StringBuilder decoded = new StringBuilder();
 
 		//iterate over each character in the string
 		for (int i = 0; i < code.length(); i++) {
@@ -128,7 +135,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 						/* cast j as a character, as that is the character value that it is equal to, then take the value of it as a string 
 						and append it to the decoded string */
-						decoded += String.valueOf( (char)(j) );
+						decoded.append(String.valueOf( (char)(j) ));
 					}
 				}
 				//start now begins at the character immediately after the space (the space was at i)
@@ -137,7 +144,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		}
 
 		//return the decoded string
-		return decoded;
+		return decoded.toString();
 	}
 
 	//print the characters and their codes
@@ -173,6 +180,8 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	/* builds a table that holds the code associated with each character in the huff tree */
 	public String[] buildCodeTable(String code) {
 
+		if (codeTable != null) return codeTable;
+
 		//if the string of characters from the huffman tree traversal is invalid, then return null
 		if (code == null || code.equals("")) return null;
 
@@ -200,6 +209,8 @@ public class huffmanAlgorithm implements HuffmanCoding {
 				start = i + 1;
 			}
 		}
+
+		codeTable = table;
 
 		//return the filled table. if it equals null then it isnt present in the file.
 		return table;
