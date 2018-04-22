@@ -6,15 +6,17 @@ public class test {
 
 	generateCharFiles.generate("chars.txt", 10000);
 
-	huffmanAlgorithm test = new huffmanAlgorithm();
+	huffman test = new huffman();
 
 	String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/illiad.txt";
 	HuffTree tree = test.buildTree(test.buildHeap(test.getFrequencies(new File(inputFile))));
 
+	// System.out.println(test.traverseHuffmanTree(tree));
 	String encoded = test.encodeFile(new File(inputFile), tree);
+	System.out.println(encoded);
+
 	String transformed = test.decodeFile( encoded, tree );
 
-	System.out.println(encoded);
 	System.out.println(transformed);
 	}
 }

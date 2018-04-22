@@ -1,14 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 
-public class huffmanAlgorithm implements HuffmanCoding {
-
-	private String[] codeTable;
-
-	public huffmanAlgorithm() {
-
-		codeTable = null;
-	}
+public class huffman implements HuffmanCoding {
 	
 	//take a file as input and create a table with characters and frequencies
 	//print the characters and frequencies
@@ -98,7 +91,7 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		while (sc.hasNext()) {
 
 			//append the encoded string of 0 and 1 to the end of the encoded string, followed by a space
-			encoded.append(String.valueOf(table[sc.next().charAt(0)]) + " ");
+			encoded.append(String.valueOf(table[sc.next().charAt(0)]));
 		}
 
 		//return the encoded string
@@ -111,37 +104,19 @@ public class huffmanAlgorithm implements HuffmanCoding {
 	@Override
 	public String decodeFile(String code, HuffTree huffTree) {
 
-		//gets a code table where each character is an index in the String table and the data element is the string of 0 and 1
-		String[] table = buildCodeTable ( traverseHuffmanTree(huffTree) );
-
-		int start = 0;
-		String occurence;
+		//the string we're going to be adding characters onto
 		StringBuilder decoded = new StringBuilder();
+		StringBuilder coded = new StringBuilder(code);
 
-		//iterate over each character in the string
-		for (int i = 0; i < code.length(); i++) {
+		while (coded.length() != 0) {
 
-			//if a character is equal to a space, then the last character of the occurence is equal to the character prior to the space
-			if (code.charAt(i) == ' ') {
-
-				//by this logic, grab the substring starting from start and ending (not including) with i the space to grab the occurence
-				occurence = code.substring(start, i);
-
-				//iterate over the table of codes and characters to find the code that matches the occurence
-				for (int j = 0; j < table.length; j++) {
-
-					//if the code equals the occurence, then we have found the character that it is equal to
-					if (table[j] != null && table[j].equals(occurence)) {
-
-						/* cast j as a character, as that is the character value that it is equal to, then take the value of it as a string 
-						and append it to the decoded string */
-						decoded.append(String.valueOf( (char)(j) ));
-					}
-				}
-				//start now begins at the character immediately after the space (the space was at i)
-				start = i + 1;
-			}
+			coded = decode(coded, huffTree.getRoot(), decoded);
 		}
+		// // System.out.println();
+
+		// code = decode(code, huffTree.getRoot(), decoded);
+
+		// decode(code, huffTree.getRoot(), decoded);
 
 		//return the decoded string
 		return decoded.toString();
@@ -156,6 +131,30 @@ public class huffmanAlgorithm implements HuffmanCoding {
 		tree.traverseTree(tree.getRoot(), codes);
 
 		return codes.toString();
+	}
+
+	public StringBuilder decode(StringBuilder code, huffNode root, StringBuilder decoded) {
+
+		if (root.isLeaf()) {
+
+			decoded.append(  String.valueOf( ((huffLeafNode)root).getValue() )  );
+			return code;
+		}
+
+		else if (code.length() == 0) return new StringBuilder();
+
+		else if (code.charAt(0) == '1') {
+			return decode(code.deleteCharAt(0), ((huffInterNode)root).getRight(), decoded);
+		}
+
+		else if (code.charAt(0) == '0') {
+			return decode(code.deleteCharAt(0), ((huffInterNode)root).getLeft(), decoded);
+		}
+
+		else  {
+			decoded.append("\n");
+			return code.deleteCharAt(0);
+		}
 	}
 
 	//build a tree from a min heap priority queue
@@ -179,8 +178,6 @@ public class huffmanAlgorithm implements HuffmanCoding {
 
 	/* builds a table that holds the code associated with each character in the huff tree */
 	public String[] buildCodeTable(String code) {
-
-		if (codeTable != null) return codeTable;
 
 		//if the string of characters from the huffman tree traversal is invalid, then return null
 		if (code == null || code.equals("")) return null;
@@ -209,8 +206,6 @@ public class huffmanAlgorithm implements HuffmanCoding {
 				start = i + 1;
 			}
 		}
-
-		codeTable = table;
 
 		//return the filled table. if it equals null then it isnt present in the file.
 		return table;
