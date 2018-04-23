@@ -11,7 +11,7 @@ public class test {
 	String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/illiad.txt";
 	HuffTree tree = test.buildTree(test.buildHeap(test.getFrequencies(new File(inputFile))));
 
-	// System.out.println(test.traverseHuffmanTree(tree));
+	System.out.println(test.traverseHuffmanTree(tree));
 	String encoded = test.encodeFile(new File(inputFile), tree);
 	System.out.println(encoded);
 

@@ -37,7 +37,7 @@ public class huffman implements HuffmanCoding {
 		String temp = "";
 
 		//iterate over the 
-		for (int i = 32; i < 127; i++) {
+		for (int i = 32; i < 128; i++) {
 
 			//if the character did not occur in the file then don't include it in the frequency string
 			if (frequencies[i] == 0) continue;
@@ -95,7 +95,7 @@ public class huffman implements HuffmanCoding {
 		}
 
 		//return the encoded string
-		return encoded.toString();
+		return encoded.toString().replaceAll( "null", "" );
 	}
 
 	//take a String and HuffTree and output the decoded words
@@ -180,7 +180,7 @@ public class huffman implements HuffmanCoding {
 	public String[] buildCodeTable(String code) {
 
 		//if the string of characters from the huffman tree traversal is invalid, then return null
-		if (code == null || code.equals("")) return null;
+		if (code == null || code.isEmpty()) return null;
 
 		//instantiate the table to be returned
 		String[] table = new String[128];
@@ -229,8 +229,11 @@ public class huffman implements HuffmanCoding {
 				//grab the occurence
 				occurence = frequencies.substring(start, i);
 
+				//if (occurence.charAt(0) == 0) heap.insert( new HuffTree( occurence.charAt(0), Integer.valueOf(occurence.substring(occurence.lastIndexOf(' ')+1)) ));
+
 				//insert a new huffTree into the heap, building it from the occurence
-				heap.insert( new HuffTree( occurence.charAt(0), Integer.valueOf(occurence.substring(occurence.lastIndexOf(' ')+1)) ));
+				//else
+					heap.insert( new HuffTree( occurence.charAt(0), Integer.valueOf(occurence.substring(occurence.lastIndexOf(' ')+1)) ));
 
 				//move i to the character after the newline
 				start = i + 1;
