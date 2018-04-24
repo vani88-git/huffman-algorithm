@@ -106,11 +106,9 @@ public class huffman implements HuffmanCoding {
 
 		//the string we're going to be adding characters onto
 		StringBuilder decoded = new StringBuilder();
-
-		//the string that is the coded string
 		StringBuilder coded = new StringBuilder(code);
 
-		//the method "decode" will return null when the string length is equal to 0 and there is nothing left to decode
+		//each loop iteration represents one character in the decoded file, each iteration of this loop starts a new decode on a character 
 		while (coded != null) {
 
 			coded = decode(coded, huffTree.getRoot(), decoded);
@@ -127,33 +125,34 @@ public class huffman implements HuffmanCoding {
 		StringBuilder codeString = new StringBuilder();
 		String[] codes = new String[128];
 
-		//traverse the tree with the root and the 
+		//traverse the tree, updating codes to be an array of the encoded characters
 		tree.traverseTree(tree.getRoot(), codes);
 
-		// create the string in ascending ascii order, if it isnt present in the table then pass over it
+		//append the characters to the string in ascending ascii order
 		for (int i = 0; i < 128; i++) {
 
+			//if the codes[index] is null, then the character corresponding to the index must not be used in the file and we skip
 			if (codes[i] == null) continue;
 
+			//else we append the character and its corresponding code onto the string
 			codeString.append( ((char)(i)) + " " + codes[i] + "\n" );
 		}
 
-		//return the sprted string
+		//return the final string
 		return codeString.toString();
 	}
 
-	//helper function for the decodeFile method, recursively called by itself 
 	private StringBuilder decode(StringBuilder code, huffNode root, StringBuilder decoded) {
 
-		//if it's a leaf, then append the value of the node onto the decoded stringbuilder obj and return the code without moving the string forward
+		//if it's a leaf, then append the value of the node onto the decoded stringbuilder and return the code without moving the string forward
 		if (root.isLeaf()) {
 
 			decoded.append(  String.valueOf( ((huffLeafNode)root).getValue() )  );
 			return code;
 		}
 
-		//else if the string is null or empty, return null to break the while loop in the decodeFile function
-		else if (code == null || code.length() == 0) return null;
+		//else if the string is empty, return a new StrinBuilder obj to break the while loop in the decodeFile function
+		else if (code.length() == 0) return null;
 
 		//else if the character at the beginning is a 1, move right
 		else if (code.charAt(0) == '1') {
