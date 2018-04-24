@@ -37,7 +37,7 @@ public class HuffTree {
 		
 	}
 
-	public void traverseTree(huffNode node, String[] codes, String code) {
+	private void traverseTree(huffNode node, String[] codes, String code) {
 
 		if (node.isLeaf()) {
 

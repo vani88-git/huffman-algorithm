@@ -10,14 +10,16 @@ public class test {
 
 		String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/sample.txt";
 
+		File file = new File(inputFile);
+
 		//get frequencies
-		String frequencies = test.getFrequencies(new File(inputFile));
+		String frequencies = test.getFrequencies(file);
 		System.out.println(frequencies);
 
-		HuffTree tree = test.buildTree(test.buildHeap(frequencies));
+		HuffTree tree = test.buildTree(file);
 
 		//get encode
-		String encoded = test.encodeFile(new File(inputFile), tree);
+		String encoded = test.encodeFile(file, tree);
 		System.out.println(encoded);
 
 		//get decode

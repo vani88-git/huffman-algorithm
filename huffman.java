@@ -106,17 +106,15 @@ public class huffman implements HuffmanCoding {
 
 		//the string we're going to be adding characters onto
 		StringBuilder decoded = new StringBuilder();
+
+		//the string that is the coded string
 		StringBuilder coded = new StringBuilder(code);
 
-		while (coded.length() != 0) {
+		//the method "decode" will return null when the string length is equal to 0 and there is nothing left to decode
+		while (coded != null) {
 
 			coded = decode(coded, huffTree.getRoot(), decoded);
 		}
-		// // System.out.println();
-
-		// code = decode(code, huffTree.getRoot(), decoded);
-
-		// decode(code, huffTree.getRoot(), decoded);
 
 		//return the decoded string
 		return decoded.toString();
@@ -129,8 +127,10 @@ public class huffman implements HuffmanCoding {
 		StringBuilder codeString = new StringBuilder();
 		String[] codes = new String[128];
 
+		//traverse the tree with the root and the 
 		tree.traverseTree(tree.getRoot(), codes);
 
+		// create the string in ascending ascii order, if it isnt present in the table then pass over it
 		for (int i = 0; i < 128; i++) {
 
 			if (codes[i] == null) continue;
@@ -138,27 +138,36 @@ public class huffman implements HuffmanCoding {
 			codeString.append( ((char)(i)) + " " + codes[i] + "\n" );
 		}
 
+		//return the sprted string
 		return codeString.toString();
 	}
 
-	public StringBuilder decode(StringBuilder code, huffNode root, StringBuilder decoded) {
+	//helper function for the decodeFile method, recursively called by itself 
+	private StringBuilder decode(StringBuilder code, huffNode root, StringBuilder decoded) {
 
+		//if it's a leaf, then append the value of the node onto the decoded stringbuilder obj and return the code without moving the string forward
 		if (root.isLeaf()) {
 
 			decoded.append(  String.valueOf( ((huffLeafNode)root).getValue() )  );
 			return code;
 		}
 
-		else if (code.length() == 0) return new StringBuilder();
+		//else if the string is null or empty, return null to break the while loop in the decodeFile function
+		else if (code == null || code.length() == 0) return null;
 
+		//else if the character at the beginning is a 1, move right
 		else if (code.charAt(0) == '1') {
+
 			return decode(code.deleteCharAt(0), ((huffInterNode)root).getRight(), decoded);
 		}
 
+		//else if the character at the beginning of the encodeed string is a 0, move left
 		else if (code.charAt(0) == '0') {
+
 			return decode(code.deleteCharAt(0), ((huffInterNode)root).getLeft(), decoded);
 		}
 
+		//if it's not a 0 or a 1, add a newline (a case that is only reached if null is present in the encoded string)
 		else  {
 			decoded.append("\n");
 			return code.deleteCharAt(0);
@@ -166,7 +175,7 @@ public class huffman implements HuffmanCoding {
 	}
 
 	//build a tree from a min heap priority queue
-	public HuffTree buildTree(minHeap heap) {
+	private HuffTree buildTree(minHeap heap) {
 
 		HuffTree a, b;
 
@@ -185,7 +194,7 @@ public class huffman implements HuffmanCoding {
 	}
 
 	/* builds a table that holds the code associated with each character in the huff tree */
-	public String[] buildCodeTable(String code) {
+	private String[] buildCodeTable(String code) {
 
 		//if the string of characters from the huffman tree traversal is invalid, then return null
 		if (code == null || code.isEmpty()) return null;
@@ -220,7 +229,7 @@ public class huffman implements HuffmanCoding {
 	}
 
 	//build a heap from the string of frequencies
-	public minHeap buildHeap(String frequencies) {
+	private minHeap buildHeap(String frequencies) {
 
 		minHeap heap = new minHeap();
 
