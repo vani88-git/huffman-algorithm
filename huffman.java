@@ -126,11 +126,19 @@ public class huffman implements HuffmanCoding {
 	@Override
 	public String traverseHuffmanTree(HuffTree tree) {
 
-		StringBuilder codes = new StringBuilder();
+		StringBuilder codeString = new StringBuilder();
+		String[] codes = new String[128];
 
 		tree.traverseTree(tree.getRoot(), codes);
 
-		return codes.toString();
+		for (int i = 0; i < 128; i++) {
+
+			if (codes[i] == null) continue;
+
+			codeString.append( ((char)(i)) + " " + codes[i] + "\n" );
+		}
+
+		return codeString.toString();
 	}
 
 	public StringBuilder decode(StringBuilder code, huffNode root, StringBuilder decoded) {

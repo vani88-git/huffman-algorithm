@@ -27,7 +27,7 @@ public class HuffTree {
 		return root.getWeight();
 	}
 
-	public void traverseTree(huffNode node, StringBuilder codes) {
+	public void traverseTree(huffNode node, String[] codes) {
 
 		if (codes == null || node == null || node.isLeaf()) return;
 
@@ -37,11 +37,11 @@ public class HuffTree {
 		
 	}
 
-	public void traverseTree(huffNode node, StringBuilder codes, String code) {
+	public void traverseTree(huffNode node, String[] codes, String code) {
 
 		if (node.isLeaf()) {
 
-			codes.append(( (huffLeafNode) node ).getValue() + " " + code + "\n");
+			codes[( (huffLeafNode) node ).getValue()] = code;
 		}
 
 		else {
