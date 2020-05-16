@@ -8,11 +8,14 @@ public class test {
 
 		huffman test = new huffman();
 
-		String inputFile = "/Users/johnhodson/GitHub/huffman-algorithm/sample.txt";
+
+
+		String inputFile = "/home/iisclap/vani/sample.txt";
 
 		File file = new File(inputFile);
 
 		//get frequencies
+
 		String frequencies = test.getFrequencies(file);
 		System.out.println(frequencies);
 
